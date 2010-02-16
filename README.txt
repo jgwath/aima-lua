@@ -49,6 +49,31 @@ Directory structure:
 
 ----------------------------------------------------------------------
 
+Library Usage:
+
+To use a library module, you will need to assign it to a local
+variable like this:
+
+	local agents = require "agents"
+
+	... 
+
+	myagent2 = agents.TraceAgent(myagent1)
+
+You may of course name the module whatever you want in the local
+namespace.  So this is equivalent to the above:
+
+	local A = require "agents"
+
+	... 
+
+	myagent2 = A.TraceAgent(myagent1)
+
+We are not using the Lua module() function, so it is always necessary
+to use an assignment as shown above.
+
+----------------------------------------------------------------------
+
 Sites to visit:
 
 http://www.lua.org			The Lua Programming Language
