@@ -1,15 +1,7 @@
 
 require "object"
-require "utils"
 
--- Since we already have an 'Object' class, just re-use it.
---[[
-function Object:repr()
-    return self.name
-end
-]]--
-
--- don't really need is_alive() because nil is also false
+local _M = {}
 
 -- Agent class
 function prompt_program(percept)
@@ -17,9 +9,9 @@ function prompt_program(percept)
     return io.read()
 end
 
-Agent = Object { alive = true, program = prompt_program }
+_M.Agent = Object { alive = true, program = prompt_program }
 
-function TraceAgent(agent)
+function _M.TraceAgent(agent)
     old_program = agent.program
     function new_program(percept)
         local action = old_program(percept)
@@ -29,3 +21,5 @@ function TraceAgent(agent)
     agent.program = new_program
     return agent
 end
+
+return _M
