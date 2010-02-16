@@ -1,11 +1,13 @@
 
 require "object"
+require "io"
+require "string"
 
-local _M = {}
+local _M = {} -- Will contain all exported functions.
 
 -- Agent class
 function prompt_program(percept)
-    io.write("Percept=%s; action? ":format(percept))
+    io.write(string.format("Percept=%s; action? ", percept))
     return io.read()
 end
 
