@@ -22,11 +22,39 @@ good example of Lua coding practices.
 
 ----------------------------------------------------------------------
 
+Requirements:
+
+Lua 5.1:
+	http://www.lua.org
+
+	Or you can just install Lua via your operating system's
+	package manager.
+
+Reuben Thomas's stdlib:
+
+	http://luaforge.net/projects/stdlib/
+
+	For the object module, getopt, etc.
+
+----------------------------------------------------------------------
+
+Directory structure:
+
+	modules
+		The main library codebase.
+
+	examples
+		Example code using the library, following the chapter
+		structure of the book.
+
+----------------------------------------------------------------------
+
 Sites to visit:
 
-	http://www.lua.org		The Lua Programming Language
-	http://www.lua-users.org	Wiki and mailing list
-	http://aima.cs.berkeley.edu/	Author's website
+http://www.lua.org			The Lua Programming Language
+http://www.lua-users.org		Lua wiki and mailing list
+http://aima.cs.berkeley.edu/		AIMA Book website
+http://luaforge.net/projects/stdlib/	Reuben Thomas' stdlib project
 
 ----------------------------------------------------------------------
 
