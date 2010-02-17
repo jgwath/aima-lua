@@ -13,6 +13,7 @@ end
 
 _M.Agent = Object { alive = true, program = prompt_program }
 
+-- TODO : use logging facility instead
 function _M.TraceAgent(agent)
     old_program = agent.program
     function new_program(percept)
@@ -23,5 +24,7 @@ function _M.TraceAgent(agent)
     agent.program = new_program
     return agent
 end
+
+_M.Table_Driven_Agent = _M.Agent { _init = { "percept_table" }, percepts = {}}
 
 return _M
