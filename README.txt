@@ -30,6 +30,7 @@ LICENSE and COPYRIGHT:
 	Code is Copyright (c) 2010 by James Graves (ansible@xnet.com).
 
 	All code in this project is released under the MIT License.
+	Please see the COPYRIGHT file for details.
 
 ----------------------------------------------------------------------
 
