@@ -33,5 +33,6 @@ function _M.list_compare(a, b)
         end
     end
     return true
+end
 
 return _M
