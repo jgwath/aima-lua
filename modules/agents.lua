@@ -63,6 +63,7 @@ local function simple_td_program(history, percept, lookup)
     for i, v in pairs(lookup) do
         if u.list_compare(i, history) then return v end
     end
+    -- else return nil
 end
 
 _M.Simple_Table_Driven_Agent = _M.Agent { _init = { "percept_lookup" }, 
