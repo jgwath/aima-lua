@@ -44,8 +44,8 @@ end
 
     Example Use:
 
-        local hist = { [{ 2, 1 }] = "foo",
-                       [{ 3, 1 }] = "bar",
+        local hist = { [{ 1, 2 }] = "foo",
+                       [{ 1, 3 }] = "bar",
                        [{ 3 }] = "baz3",
                        [{ 2 }] = "baz2",
                        [{ 1 }] = "baz1" }
@@ -66,7 +66,7 @@ local function simple_td_program(history, percept, lookup)
     -- else return nil
 end
 
-_M.Simple_Table_Driven_Agent = _M.Agent { _init = { "percept_lookup" }, 
+_M.Simple_Table_Driven_Agent = _M.Agent { _init = { "name", "percept_lookup" }, 
                                           name = "Simple Table Driven Agent",
                                           percept_history = {},
                                           td_program = simple_td_program }
