@@ -4,11 +4,11 @@ require "io"
 require "string"
 local u = require "aima_utils"
 
-local _M = {} -- Will contain all exported functions.
+local M = {} -- Will contain all exported functions.
 
-_M.Object = Object
+M.Object = Object
 
-function _M.Object:__tostring() return self.name or "Object" end
+function M.Object:__tostring() return self.name or "Object" end
 
 -- Agent class
 function prompt_program(percept)
@@ -16,15 +16,18 @@ function prompt_program(percept)
     return io.read()
 end
 
-_M.Agent = Object { alive = true, program = prompt_program }
+M.Agent = Object { alive = true, program = prompt_program }
 
 
 -- TODO : use logging facility instead
-function _M.TraceAgent(agent)
-    old_program = agent.program
-    function new_program(percept)
-        local action = old_program(percept)
-        printf("%s perceives %s and does %s\n", agent, precept, action)
+function M.Trace_Agent(agent)
+    local old_program = agent.program
+    function new_program(self, percept)
+        local action = old_program(self, percept)
+        local print_self = tostring(self)
+        local print_percept = tostring(percept)
+        local print_action = tostring(action)
+        printf("%s perceives %s and does %s\n", print_self, print_percept, print_action)
         return action
     end
     agent.program = new_program
@@ -42,19 +45,7 @@ end
     of the Python code where the 'program' function does not have 
     general access to the internals of the agent.
 
-    Example Use:
-
-        local hist = { [{ 1, 2 }] = "foo",
-                       [{ 1, 3 }] = "bar",
-                       [{ 3 }] = "baz3",
-                       [{ 2 }] = "baz2",
-                       [{ 1 }] = "baz1" }
-        agent2 = A.Simple_Table_Driven_Agent{ hist }
-
-        agent2:program(1)  -->  returns "baz1"
-        agent2:program(2)  -->  returns "foo"
-        agent2:program(3)  -->  returns nil
-
+    Example Use: See chapter/2/table_driven_agent.lua
 
 ]]--
 
@@ -66,12 +57,12 @@ local function simple_td_program(history, percept, lookup)
     -- else return nil
 end
 
-_M.Simple_Table_Driven_Agent = _M.Agent { _init = { "name", "percept_lookup" }, 
+M.Simple_Table_Driven_Agent = M.Agent { _init = { "name", "percept_lookup" }, 
                                           name = "Simple Table Driven Agent",
                                           percept_history = {},
                                           td_program = simple_td_program }
 
-function _M.Simple_Table_Driven_Agent:program(percept)
+function M.Simple_Table_Driven_Agent:program(percept)
     return self.td_program(self.percept_history, percept, self.percept_lookup)
 end
 
@@ -94,10 +85,10 @@ end
 --[[
     Random Agent
 ]]--
-_M.Random_Agent = _M.Agent { _init = {"actions"}}
+M.Random_Agent = M.Agent { _init = {"actions"}}
 
-function _M.Random_Agent:program(percept)
+function M.Random_Agent:program(percept)
     return u.random_choice(self.actions)
 end
 
-return _M
+return M

@@ -3,9 +3,9 @@ require "io"
 require "string"
 require "math"
 
-local _M = {} -- Will contain all exported functions.
+local M = {} -- Will contain all exported functions.
 
-function _M.random_choice(list)
+function M.random_choice(list)
     local i = math.random(#list)
     return list[i]
 end
@@ -17,7 +17,7 @@ end
     TODO: If something better is needed, consider using Penlight's table
     utilities instead.
 ]]--
-function _M.list_compare(a, b)
+function M.list_compare(a, b)
     if #a ~= #b then
         return false
     end
@@ -35,4 +35,4 @@ function _M.list_compare(a, b)
     return true
 end
 
-return _M
+return M
