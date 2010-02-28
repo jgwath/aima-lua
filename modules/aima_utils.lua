@@ -5,10 +5,17 @@ require "math"
 
 local M = {} -- Will contain all exported functions.
 
+
+--[[
+    random_choice()
+
+    Randomly choose an item from the list.
+]]--
 function M.random_choice(list)
     local i = math.random(#list)
     return list[i]
 end
+
 
 --[[
     Simple list comparison.
