@@ -1,6 +1,7 @@
 local u = require "utilities"
 local A = require "agents"
 
+-- Simple test of table-driven agents.
 
 local hist = { [{ 1, 2 }] = "foo",
                [{ 1, 3 }] = "bar",
