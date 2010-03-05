@@ -2,7 +2,7 @@
 require "object"  -- injects Object from stdlib into globals
 require "io"
 require "string"
-local u = require "aima_utils"
+local p = require "python_compat"
 
 local M = {} -- Will contain all exported functions.
 
@@ -72,7 +72,7 @@ M.Simple_Table_Driven_Agent = M.Agent { _init = { "name", "percept_lookup" },
 function M.Simple_Table_Driven_Agent:program(percept)
     table.insert(self.percept_history, percept)
     for i, v in pairs(self.percept_lookup) do
-        if u.list_compare(i, self.percept_history) then return v end
+        if p.list_compare(i, self.percept_history) then return v end
     end
     -- else return nil
 end
@@ -158,7 +158,7 @@ function M.Table_Driven_Agent:program(percept)
             node = next_node
         else    
             -- This works because the percepts are not integer indices.
-            return u.random_choice(node)
+            return p.random_choice(node)
         end
     end
 end
@@ -170,7 +170,7 @@ end
 M.Random_Agent = M.Agent { _init = {"name", "actions"} }
 
 function M.Random_Agent:program(percept)
-    return u.random_choice(self.actions)
+    return p.random_choice(self.actions)
 end
 
 
