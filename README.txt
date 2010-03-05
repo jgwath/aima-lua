@@ -85,6 +85,14 @@ Directory structure:
 		If you are working your way through the AIMA book,
 		start right here in chapter/2.
 
+	docs
+		General documentation of the library, as well as other
+		documents like coding style.
+
+	extras
+		Example programs, and other fun stuff not directly
+		related to the AIMA3e book.
+
 ----------------------------------------------------------------------
 
 Library Usage:
@@ -98,21 +106,7 @@ variable like this:
 
 	myagent2 = agents.TraceAgent(myagent1)
 
-You may of course name the module whatever you want in the local
-namespace.  So this is equivalent to the above:
-
-	local A = require "agents"
-
-	... 
-
-	myagent2 = A.TraceAgent(myagent1)
-
-We are not using the Lua module() function, so it is always necessary
-to use an assignment as shown above.
-
-Please see the Lua wiki for the rationale behind this approach:
-
-    http://lua-users.org/wiki/LuaModuleFunctionCritiqued
+Please see docs/coding_style.txt for more information.
 
 ----------------------------------------------------------------------
 
