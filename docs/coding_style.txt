@@ -31,4 +31,9 @@ convenient.  In most cases, where there will be no ambiguity, we will
 just use single letters.  "Utilities" will typically be imported as
 "U", for example.
 
+So all functions and objects in a module file must either be declared
+'local' (and obviously not exported) or put into the module table 'M'.
+
+No global declarations!
+
 ----------------------------------------------------------------------
