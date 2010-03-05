@@ -21,7 +21,7 @@ readily be incorporated into other projects.
 ----------------------------------------------------------------------
 
 DISCLAIMER: This project is not officially sanctioned by the authors of
-the AIMA book.
+the AIMA3e book.
 
 ----------------------------------------------------------------------
 
@@ -85,6 +85,9 @@ Directory structure:
 		If you are working your way through the AIMA book,
 		start right here in chapter/2.
 
+	utils
+		Utility libraries.
+
 	docs
 		General documentation of the library, as well as other
 		documents like coding style.
@@ -97,16 +100,24 @@ Directory structure:
 
 Library Usage:
 
-To use a library module, you will need to assign it to a local
-variable like this:
+You will need to add the 'modules' and 'utils' directories to your
+LUA_PATH environment variable.  For example, if /bin/sh is your
+command shell:
+
+	LUA_PATH+=";/path/to/aima-lua/modules;/path/to/aima-lua/utils"
+	export LUA_PATH
+
+In your Lua code, to use a library module, you will need to assign it to
+a local variable like this:
 
 	local agents = require "agents"
 
 	... 
-
+	-- now use 'agents'
 	myagent2 = agents.TraceAgent(myagent1)
 
-Please see docs/coding_style.txt for more information.
+Please see docs/coding_style.txt for more information on module
+declarations.
 
 ----------------------------------------------------------------------
 
