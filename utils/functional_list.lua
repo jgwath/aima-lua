@@ -234,7 +234,7 @@ end
         foldr1(add, {1,2,3,4})  ->  10
 ]]--
 function M.foldr1(func, tbl)
-    return M.foldr(func, tbl[1], tail(tbl))
+    return M.foldr(func, tbl[1], M.tail(tbl))
 end
 
 
@@ -259,7 +259,7 @@ end
         foldl1(div, {120, 2, 3, 5})  ->  4
 ]]--
 function M.foldl1(func, tbl)
-    return M.foldl(func, tbl[1], tail(tbl))
+    return M.foldl(func, tbl[1], M.tail(tbl))
 end
 
 
@@ -440,6 +440,5 @@ function and(tbl)
     return foldr(operator.and, true, tbl)
 end
 ]]--
-
 
 return M
