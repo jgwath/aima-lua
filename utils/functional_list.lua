@@ -441,4 +441,36 @@ function and(tbl)
 end
 ]]--
 
+
+--[[
+    all()
+
+    Note that we're not checking explicitly for boolean 'true'
+    on the list.  So any value other than 'false' will be
+    true.
+]]--
+
+function M.all(func, list)
+    for i, v in ipairs(list) do
+        if not func(v) then return false end
+    end
+    return true
+end
+
+
+--[[
+    any()
+
+    Note that we're not checking explicitly for boolean 'true'
+    on the list.  So any value other than 'false' will be
+    true.
+]]--
+function M.any(func, list)
+    for i, v in ipairs(list) do
+        if func(v) then return true end
+    end
+    return false
+end
+
+
 return M
