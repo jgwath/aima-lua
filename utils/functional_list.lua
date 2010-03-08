@@ -473,4 +473,25 @@ function M.any(func, list)
 end
 
 
+--[[
+    list_append()
+
+    Create a new list with the contents of list1 with the contents
+    of list2 added to the end of it.
+]]--
+  
+function M.list_append(list1, list2)
+    local curr = #list1 + 1
+    local newlist = {}
+    for i, v in ipairs(list1) do
+        newlist[i] = v
+    end
+    for i, v in ipairs(list2) do
+        newlist[curr] = v
+        curr = curr + 1
+    end
+    return newlist
+end
+
+
 return M
