@@ -37,7 +37,7 @@ end
 
     Simple Table Driven Agent
 
-    AIMA3e, Figure 2.7, page 47
+    AIMA3e, Chapter 2, Figure 2.7, page 47
 
     First version is a simple table match against the entire
     history of the percepts.  See below for a more useful 
@@ -133,7 +133,7 @@ end
 --[[
     Simple Reflex Agent
 
-    AIMA3e, Figure 2.10, page 49
+    AIMA3e, Chapter 2, Figure 2.10, page 49
 
     The simple reflex agent is a special case of the table driven agent
     with only one level of percepts.
@@ -177,7 +177,7 @@ end
 --[[
     Model Based Reflex Agent
 
-    AIMA3e, Figure 2.12, page 51
+    AIMA3e, Chapter 2, Figure 2.12, page 51
 ]]--
 
 return M

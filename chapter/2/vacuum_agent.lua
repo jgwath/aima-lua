@@ -1,9 +1,11 @@
 
+local A = require "agents"
+
 --[[
 
     Simple_Table_Driven_Vacuum_Agent
 
-    AIMA3e, Figure 2.3, page 36
+    AIMA3e, Chapter 2, Figure 2.3, page 36
 
     Percept Sequence                        Action
 
@@ -30,5 +32,7 @@
 
     Reflex_Vacuum_Agent
 
-    AIMA3e, Figure 2.8, page 48
+    AIMA3e, Chapter 2, Figure 2.8, page 48
 ]]--
+
+
