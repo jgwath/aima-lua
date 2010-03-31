@@ -10,6 +10,8 @@ local M = {} -- Will contain all exported functions.
     random_choice()
 
     Randomly choose an item from the list.
+
+    Don't forget to initialize the random seed first.
 ]]--
 function M.random_choice(list)
     local i = math.random(#list)

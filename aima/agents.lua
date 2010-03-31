@@ -2,7 +2,7 @@
 require "object"  -- injects Object from stdlib into globals
 require "io"
 require "string"
-local p = require "python_compat"
+local p = require "aima_utils.python_compat"
 
 local M = {} -- Will contain all exported functions.
 
@@ -92,14 +92,14 @@ end
 
     An small example history tree:
 
-        [[1] = 'a', [2] = 'b']
-        \_____________________'x'___[[1] = 'c', [2] = 'd', [3] = 'f']
+        [ [1] = 'a', [2] = 'b']
+        \_____________________'x'___[ [1] = 'c', [2] = 'd', [3] = 'f']
          \
-          \___________________'y'___[[1] = 'd', [2] = 'g']
+          \___________________'y'___[ [1] = 'd', [2] = 'g']
                                     \
-                                     \_______'z'___[[1] = 'e']
+                                     \_______'z'___[ [1] = 'e']
                                       \
-                                       \_____'y'___[[1] = 'f']
+                                       \_____'y'___[ [1] = 'f']
 
     So if the current percept doesn't match 'x' or 'y', then we will
     choose either 'a' or 'b' as the action.
