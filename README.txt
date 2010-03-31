@@ -52,7 +52,7 @@ Reuben Thomas's stdlib:
 
 Directory structure:
 
-	modules
+	aima
 		The main library codebase.
 
 		Generally speaking, this will be code that might be of
@@ -85,7 +85,7 @@ Directory structure:
 		If you are working your way through the AIMA book,
 		start right here in chapter/2.
 
-	utils
+	aima_utils
 		Utility libraries.
 
 	docs
@@ -100,21 +100,23 @@ Directory structure:
 
 Library Usage:
 
-You will need to add the 'modules' and 'utils' directories to your
-LUA_PATH environment variable.  For example, if /bin/sh is your
-command shell:
+You will need to add the aima-lua directory to your LUA_PATH environment
+variable.  For example, if /bin/bash is your command shell:
 
-	LUA_PATH+=";/path/to/aima-lua/modules;/path/to/aima-lua/utils"
-	export LUA_PATH
+	# ... other LUA_PATH elements ...
+	export LUA_PATH+=";/path/to/aima-lua/?.lua"
 
 In your Lua code, to use a library module, you will need to assign it to
 a local variable like this:
 
-	local agents = require "agents"
+	local agents = require "aima.agents"
+	local PC = require "aima_utils.python_compat"
 
-	... 
-	-- now use 'agents'
-	myagent2 = agents.TraceAgent(myagent1)
+	-- Now use something from the agents module.
+	myagent2 = agents.Random_Agent(percept_table)
+
+	-- now use python_compat
+	door = PC.random_choice(door_list)
 
 Please see docs/coding_style.txt for more information on module
 declarations.
@@ -123,8 +125,9 @@ declarations.
 
 Sites to visit:
 
-http://www.lua.org			The Lua Programming Language
-http://www.lua-users.org		Lua wiki and mailing list
 http://aima.cs.berkeley.edu/		AIMA Book website
+http://www.lua.org			The Lua Programming Language
+
+http://www.lua-users.org		Lua wiki and mailing list
 http://luaforge.net/projects/stdlib/	Reuben Thomas' stdlib project
 
