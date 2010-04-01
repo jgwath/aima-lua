@@ -20,8 +20,7 @@ end
 
 
 --[[
-    Simple list comparison.
-    This is slow and inefficient.
+    Simple / shallow list comparison.
 
     TODO: If something better is needed, consider using Penlight's table
     utilities instead.

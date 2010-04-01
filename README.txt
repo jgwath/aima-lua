@@ -85,7 +85,7 @@ Directory structure:
 		If you are working your way through the AIMA book,
 		start right here in chapter/2.
 
-	aima_utils
+	aima/utils
 		Utility libraries.
 
 	docs
@@ -94,7 +94,8 @@ Directory structure:
 
 	extras
 		Example programs, and other fun stuff not directly
-		related to the AIMA3e book.
+		related to the AIMA3e book.  This will contain
+		extended examples of AI use in games.
 
 ----------------------------------------------------------------------
 
@@ -110,7 +111,7 @@ In your Lua code, to use a library module, you will need to assign it to
 a local variable like this:
 
 	local agents = require "aima.agents"
-	local PC = require "aima_utils.python_compat"
+	local PC = require "aima.utils.python_compat"
 
 	-- Now use something from the agents module.
 	myagent2 = agents.Random_Agent(percept_table)

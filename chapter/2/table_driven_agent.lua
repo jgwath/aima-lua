@@ -1,5 +1,6 @@
-local u = require "utilities"
-local A = require "agents"
+#!/usr/bin/env lua
+
+local A = require "aima.agents"
 
 -- Simple test of table-driven agents.
 
@@ -12,11 +13,6 @@ local hist = { [{ 1, 2 }] = "foo",
 agent2 = A.Simple_Table_Driven_Agent{ "agent2", hist }
 
 agent3 = A.Trace_Agent(agent2)
--- print("\n\nagent2:")
--- tp(agent2)
--- print("\n\nagent3:")
--- tp(agent3)
--- print("\n\n")
 
 print("1:")
 print(agent3:program(1))  -->  returns "baz1"
@@ -25,4 +21,3 @@ print(agent3:program(2))  -->  returns "foo"
 print("3:")
 print(agent3:program(3))  -->  returns nil
 print("agent3:", agent3)
--- tp(agent2)

@@ -1,5 +1,5 @@
 
-local A = require "agents"
+local A = require "aima.agents"
 
 --[[
 
