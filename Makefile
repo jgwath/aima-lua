@@ -1,3 +1,3 @@
 
 tags:
-	find aima aima_utils -name "*.lua" | xargs ctags -a
+	find aima extras -name "*.lua" | xargs ctags -a
