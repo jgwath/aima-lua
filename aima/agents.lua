@@ -2,7 +2,7 @@
 require "object"  -- injects Object from stdlib into globals
 require "io"
 require "string"
-local p = require "aima_utils.python_compat"
+local p = require "aima.utils.python_compat"
 
 local M = {} -- Will contain all exported functions.
 
@@ -19,13 +19,12 @@ function M.Agent:prompt_program(percept)
 end
 
 
--- TODO : should this really be a part of the environment?
+-- TODO : should this instead be a part of the environment?
 function M.Trace_Agent(agent)
     local old_program = agent.program
     function new_program(self, percept)
         local action = old_program(self, percept)
-        printf("%s perceives %s and does %s\n", 
-               tostring(self), tostring(percept), tostring(action))
+        print(  self, " perceives ", percept, " and does ", action)
         return action
     end
     agent.program = new_program
@@ -157,7 +156,9 @@ function M.Table_Driven_Agent:program(percept)
         if next_node then
             node = next_node
         else    
-            -- This works because the percepts are not integer indices.
+            -- This works because only the actions are integer indicies,
+            -- the percepts are names.
+            -- I may be trying to be too clever here.
             return p.random_choice(node)
         end
     end
