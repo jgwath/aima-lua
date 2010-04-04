@@ -1,17 +1,20 @@
 
-require "object"  -- injects Object from stdlib into globals
+-- Standard Lua
 require "io"
 require "string"
+
+-- External libraries
+require "object"  -- injects Object from stdlib into globals
+
+-- Local libraries
 local p = require "aima.utils.python_compat"
 
-local M = {} -- Will contain all exported functions.
-
-M.Object = Object
-
-function M.Object:__tostring() return self.name or "Object" end
+-- Module declaration
+local M = {} -- M will contain all exported functions.
 
 -- Agent class
 M.Agent = Object { _init = { "name" }, alive = true }
+function M.Agent:__tostring() return self.name or "Agent" end
 
 function M.Agent:prompt_program(percept)
     io.write(string.format("Percept=%s; action? ", percept))
