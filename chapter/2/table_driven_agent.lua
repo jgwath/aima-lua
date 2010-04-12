@@ -4,6 +4,7 @@ local A = require "aima.agents"
 
 -- Simple test of table-driven agents.
 
+print("Table Driven agent:")
 local hist = { [{ 1, 2 }] = "foo",
                [{ 1, 3 }] = "bar",
                [{ 3 }] = "baz3",
@@ -11,13 +12,9 @@ local hist = { [{ 1, 2 }] = "foo",
                [{ 1 }] = "baz1" }
 
 agent2 = A.Simple_Table_Driven_Agent{ "agent2", hist }
+agent2 = A.Trace_Agent(agent2)
 
-agent3 = A.Trace_Agent(agent2)
+action = agent2:program(1)  -->  returns "baz1"
+action = agent2:program(2)  -->  returns "foo"
+action = agent2:program(3)  -->  returns nil
 
-print("1:")
-print(agent3:program(1))  -->  returns "baz1"
-print("2:")
-print(agent3:program(2))  -->  returns "foo"
-print("3:")
-print(agent3:program(3))  -->  returns nil
-print("agent3:", agent3)
