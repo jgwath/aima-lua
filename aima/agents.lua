@@ -80,7 +80,7 @@ function M.Simple_Table_Driven_Agent:program(percept)
 end
 
 
---[[
+--[==[
     Table Driven Agent / Simple Reflex Agent
 
     This will be somewhat of a divergence from the book.  A table driven agent 
@@ -94,14 +94,14 @@ end
 
     An small example history tree:
 
-        [ [1] = 'a', [2] = 'b']
-        \_____________________'x'___[ [1] = 'c', [2] = 'd', [3] = 'f']
+        [[1] = 'a', [2] = 'b']
+        \_____________________'x'___[[1] = 'c', [2] = 'd', [3] = 'f']
          \
-          \___________________'y'___[ [1] = 'd', [2] = 'g']
+          \___________________'y'___[[1] = 'd', [2] = 'g']
                                     \
-                                     \_______'z'___[ [1] = 'e']
+                                     \_______'z'___[[1] = 'e']
                                       \
-                                       \_____'y'___[ [1] = 'f']
+                                       \_____'y'___[[1] = 'f']
 
     So if the current percept doesn't match 'x' or 'y', then we will
     choose either 'a' or 'b' as the action.
@@ -130,7 +130,7 @@ end
     To Use:
         ag1 = Table_Driven_Agent {"my_ag1", tree, 3}
 
-]]--
+]==]--
 
 --[[
     Simple Reflex Agent
@@ -147,24 +147,32 @@ M.Table_Driven_Agent = M.Agent { _init = { "name", "depth", "lookup_tree" },
 
 function M.Table_Driven_Agent:program(percept)
     local hist = self.percept_history
+    -- print("old history")
+    -- tp(hist)
     if #hist >= self.depth then
         table.remove(hist) -- oldest 
     end
     table.insert(hist, 1, percept)
+    -- print("new history")
+    -- tp(hist)
 
-    local hindex = 1
     local node = self.lookup_tree
+
+    -- This works because only the actions are integer indicies,
+    -- the percepts are names.
+    -- I may be trying to be too clever here.
+    local action = p.random_choice(node)
+
     for i, curr_percept in ipairs(hist) do
         local next_node = node[curr_percept]
         if next_node then
             node = next_node
+            action = p.random_choice(node)
         else    
-            -- This works because only the actions are integer indicies,
-            -- the percepts are names.
-            -- I may be trying to be too clever here.
-            return p.random_choice(node)
+            break
         end
     end
+    return action
 end
 
 
