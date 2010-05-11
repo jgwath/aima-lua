@@ -1,5 +1,27 @@
 require "table"
 
+--[[
+
+    Since this module just returns a table of functions, I have
+    this in a utilities.lua file that is loaded when I start an
+    interactive interpreter:
+
+    local UT = require "aima/utils/basic"
+
+    table_print = UT.table_print
+    tp = UT.table_print
+    round = UT.round
+    coxpcall = UT.coxpcall
+    copcall = UT.copcall
+    scope = UT.scope
+    printf = UT.printf
+    reload = UT.reload
+
+    So that will inject these functions into the global scope, where
+    it is quicker to type in.
+
+]]--
+
 local M = {} -- functions to be exported.
 
 -- Print anything - including nested tables
@@ -95,6 +117,14 @@ end
 	John Belmonte's 'Exceptions in Lua' from Lua Programming Gems, Chapter 13
 
 	Modified to use copcall() instead.
+
+    For how to use this, see the examples here:
+
+      http://partiallyappliedlife.blogspot.com/2009/08/resource-cleanup-in-lua.html
+
+    Just put a require statement like this at the beginning of the test code:
+
+        local scope = require("aima/utils/basic").scope
 ]]--
 
 function M.scope(f)
