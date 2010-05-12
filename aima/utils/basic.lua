@@ -1,6 +1,17 @@
+--[[
+    aima/utils/basic.lua
+
+    This is a handy set of basic utility functions.
+
+    Some functions, like round(), ought to have been included in the
+    basic Lua distribution.  Others, like table_print() are quite useful
+    for quick debugging.
+]]--
+
 require "table"
 
 --[[
+    Usage Notes:
 
     Since this module just returns a table of functions, I have
     this in a utilities.lua file that is loaded when I start an
@@ -16,9 +27,11 @@ require "table"
     scope = UT.scope
     printf = UT.printf
     reload = UT.reload
+    apairs = UT.apairs
 
-    So that will inject these functions into the global scope, where
-    it is quicker to type in.
+    So that will then inject these functions into the global scope,
+    where it is quicker to type in.  This is handy for interactive
+    debugging.
 
 ]]--
 
@@ -49,6 +62,12 @@ function M.table_print (tt, indent, done)
   end
 end
 
+
+--[[
+    round()
+
+    Round number to nearest integer value.
+]]--
 function M.round(num) return math.floor(num+.5) end
 
 
@@ -64,7 +83,6 @@ function M.round(num) return math.floor(num+.5) end
 --
 -- Copyright 2005 - Kepler Project (www.keplerproject.org)
 --
--- $Id: coxpcall.lua,v 1.13 2008/05/19 19:20:02 mascarenhas Exp $
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
@@ -125,6 +143,8 @@ end
     Just put a require statement like this at the beginning of the test code:
 
         local scope = require("aima/utils/basic").scope
+
+    John has put this code into the public domain (communicated via private email).
 ]]--
 
 function M.scope(f)
@@ -181,7 +201,7 @@ end
     3       32
     4       nil
 
-    By David Manura <dm.lua@math2.org>
+    Code by David Manura <dm.lua@math2.org>
 
 ]]--
 
@@ -192,7 +212,7 @@ local function helper(a, i)
 end
 
 function M.apairs(...)
-    --    iterator, context,                 start value
+    --   iterator function, context, start value
     return helper, {n=select('#', ...), ...}, 0
 end
 
