@@ -159,4 +159,42 @@ function M.reload(mod)
     return require(mod)
 end
 
+
+--[[
+    apairs()
+
+    Easy iteration over a variable number of arguments
+    to a function.
+
+    Example Usage:
+
+    function test_func(...)
+        for i,a in apairs(...) do print(i, a) end
+    end
+
+    test_func("foo", nil, 32, nil)
+    
+    will print:
+
+    1       foo
+    2       nil
+    3       32
+    4       nil
+
+    By David Manura <dm.lua@math2.org>
+
+]]--
+
+local function helper(a, i)
+    if i < a.n then 
+        return i + 1, a[i + 1] 
+    end
+end
+
+function M.apairs(...)
+    --    iterator, context,                 start value
+    return helper, {n=select('#', ...), ...}, 0
+end
+
+
 return M
