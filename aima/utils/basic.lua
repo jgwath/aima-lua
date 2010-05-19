@@ -16,6 +16,7 @@ require "table"
     scope = UT.scope
     printf = UT.printf
     reload = UT.reload
+    apairs = UT.apairs
 
     So that will inject these functions into the global scope, where
     it is quicker to type in.
