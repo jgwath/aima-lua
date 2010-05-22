@@ -205,7 +205,7 @@ end
 
 ]]--
 
-local function helper(a, i)
+local function apairs_helper(a, i)
     if i < a.n then 
         return i + 1, a[i + 1] 
     end
@@ -213,7 +213,7 @@ end
 
 function M.apairs(...)
     --   iterator function, context, start value
-    return helper, {n=select('#', ...), ...}, 0
+    return apairs_helper, {n=select('#', ...), ...}, 0
 end
 
 
