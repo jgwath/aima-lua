@@ -6,39 +6,17 @@
     Some functions, like round(), ought to have been included in the
     basic Lua distribution.  Others, like table_print() are quite useful
     for quick debugging.
+
+    Unlike just about everything else I do, this will inject
+    the functions into the global namespace.
 ]]--
 
 require "table"
+require "debug"
 
---[[
-    Usage Notes:
-
-    Since this module just returns a table of functions, I have
-    this in a utilities.lua file that is loaded when I start an
-    interactive interpreter:
-
-    local UT = require "aima/utils/basic"
-
-    table_print = UT.table_print
-    tp = UT.table_print
-    round = UT.round
-    coxpcall = UT.coxpcall
-    copcall = UT.copcall
-    scope = UT.scope
-    printf = UT.printf
-    reload = UT.reload
-    apairs = UT.apairs
-
-    So that will then inject these functions into the global scope,
-    where it is quicker to type in.  This is handy for interactive
-    debugging.
-
-]]--
-
-local M = {} -- functions to be exported.
 
 -- Print anything - including nested tables
-function M.table_print (tt, indent, done)
+function table_print (tt, indent, done)
   done = done or {}
   indent = indent or 0
   if type(tt) == "table" then
@@ -62,13 +40,7 @@ function M.table_print (tt, indent, done)
   end
 end
 
-
---[[
-    round()
-
-    Round number to nearest integer value.
-]]--
-function M.round(num) return math.floor(num+.5) end
+tp = table_print
 
 
 -------------------------------------------------------------------------------
@@ -83,49 +55,57 @@ function M.round(num) return math.floor(num+.5) end
 --
 -- Copyright 2005 - Kepler Project (www.keplerproject.org)
 --
+-- Not really needed for Lua 5.2 anymore.
+--
 -------------------------------------------------------------------------------
 
--------------------------------------------------------------------------------
--- Implements xpcall with coroutines
--------------------------------------------------------------------------------
-local performResume, handleReturnValue
-local oldpcall, oldxpcall = pcall, xpcall
+if _VERSION == "Lua 5.2" then
+    coxpcall = xpcall
+    copcall = pcall
+else
 
-function handleReturnValue(err, co, status, ...)
-    if not status then
-        return false, err(debug.traceback(co, (...)), ...)
+    -------------------------------------------------------------------------------
+    -- Implements xpcall with coroutines
+    -------------------------------------------------------------------------------
+    local performResume, handleReturnValue
+    local oldpcall, oldxpcall = pcall, xpcall
+
+    function handleReturnValue(err, co, status, ...)
+        if not status then
+            return false, err(debug.traceback(co, (...)), ...)
+        end
+        if coroutine.status(co) == 'suspended' then
+            return performResume(err, co, coroutine.yield(...))
+        else
+            return true, ...
+        end
     end
-    if coroutine.status(co) == 'suspended' then
-        return performResume(err, co, coroutine.yield(...))
-    else
-        return true, ...
+
+    function performResume(err, co, ...)
+        return handleReturnValue(err, co, coroutine.resume(co, ...))
+    end    
+
+    function coxpcall(f, err, ...)
+        local res, co = oldpcall(coroutine.create, f)
+        if not res then
+            local params = {...}
+            local newf = function() return f(unpack(params)) end
+            co = coroutine.create(newf)
+        end
+        return performResume(err, co, ...)
     end
-end
 
-function performResume(err, co, ...)
-    return handleReturnValue(err, co, coroutine.resume(co, ...))
-end    
+    -------------------------------------------------------------------------------
+    -- Implements pcall with coroutines
+    -------------------------------------------------------------------------------
 
-function M.coxpcall(f, err, ...)
-    local res, co = oldpcall(coroutine.create, f)
-    if not res then
-        local params = {...}
-        local newf = function() return f(unpack(params)) end
-        co = coroutine.create(newf)
+    local function id(trace, ...)
+      return ...
     end
-    return performResume(err, co, ...)
-end
 
--------------------------------------------------------------------------------
--- Implements pcall with coroutines
--------------------------------------------------------------------------------
-
-local function id(trace, ...)
-  return ...
-end
-
-function M.copcall(f, ...)
-    return M.coxpcall(f, id, ...)
+    function copcall(f, ...)
+        return coxpcall(f, id, ...)
+    end
 end
 
 
@@ -134,51 +114,41 @@ end
 
 	John Belmonte's 'Exceptions in Lua' from Lua Programming Gems, Chapter 13
 
-	Modified to use copcall() instead.
-
     For how to use this, see the examples here:
 
       http://partiallyappliedlife.blogspot.com/2009/08/resource-cleanup-in-lua.html
 
-    Just put a require statement like this at the beginning of the test code:
-
-        local scope = require("aima/utils/basic").scope
-
     John has put this code into the public domain (communicated via private email).
 ]]--
+local function run_list(list, err)
+    for _, f in ipairs(list) do f(err) end
+end
 
-function M.scope(f)
-    local function run(list, err)
-        for _, f in ipairs(list) do f(err) end
-    end
+function scope(f)
     local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
     local manager = {
         on_success = function(f) table.insert(success_funcs, f) end,
         on_failure = function(f) table.insert(failure_funcs, f) end,
         on_exit =    function(f) table.insert(exit_funcs,    f) end,
     }
-    local old_fenv = getfenv(f)
+    -- Inject these functions into that f's environment.
+    local old_fenv = debug.getfenv(f)
     setmetatable(manager, {__index = old_fenv})
-    setfenv(f, manager)
-    local status, err = M.copcall(f)
-    setfenv(f, old_fenv)
+    debug.setfenv(f, manager)
+    local status, err = pcall(f)
+    debug.setfenv(f, old_fenv)
     -- NOTE: behavior undefined if a hook function raises an error
-    run(status and success_funcs or failure_funcs, err)
-    run(exit_funcs, err)
+    run_list(status and success_funcs or failure_funcs, err)
+    run_list(exit_funcs, err)
     if not status then error(err, 2) end
 end
 
 
--- printf
-function M.printf(...) io.write(string.format(...)) end
+--[[=================================================================
 
+                            Iterators
 
--- reload module
-function M.reload(mod)
-    package.loaded[mod] = nil
-    return require(mod)
-end
-
+=================================================================]]--
 
 --[[
     apairs()
@@ -211,10 +181,55 @@ local function apairs_helper(a, i)
     end
 end
 
-function M.apairs(...)
+function apairs(...)
     --   iterator function, context, start value
     return apairs_helper, {n=select('#', ...), ...}, 0
 end
 
 
-return M
+-- ipairs() depreciated (with an error) in Lua 5.2
+if not pcall(ipairs, {}) then
+    local function ipairs_helper(a, i)
+        i = i + 1
+        local v = a[i]
+        if v ~= nil then
+            return i, v
+        end
+    end
+
+    --[[
+        ipairs()
+
+            Works same as Lua 5.1 ipairs()
+
+        returns:
+            iterator function, context, start value
+    ]]--
+    function ipairs(a)
+        local mt = getmetatable(a)
+        if mt and mt.__ipairs then
+            return mt.__ipairs(a)
+        else 
+            return ipairs_helper, a, 0
+        end
+    end
+end
+
+
+--[[
+    round()
+
+    Round number to nearest integer value.
+]]--
+function round(num) return math.floor(num+.5) end
+
+
+-- printf
+function printf(...) io.write(string.format(...)) end
+
+
+-- reload module
+function reload(mod)
+    package.loaded[mod] = nil
+    return require(mod)
+end
