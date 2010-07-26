@@ -13,6 +13,7 @@
 
 require "table"
 require "debug"
+require "math"
 
 
 -- Print anything - including nested tables
@@ -109,40 +110,6 @@ else
 end
 
 
---[[
-	scope()
-
-	John Belmonte's 'Exceptions in Lua' from Lua Programming Gems, Chapter 13
-
-    For how to use this, see the examples here:
-
-      http://partiallyappliedlife.blogspot.com/2009/08/resource-cleanup-in-lua.html
-
-    John has put this code into the public domain (communicated via private email).
-]]--
-local function run_list(list, err)
-    for _, f in ipairs(list) do f(err) end
-end
-
-function scope(f)
-    local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
-    local manager = {
-        on_success = function(f) table.insert(success_funcs, f) end,
-        on_failure = function(f) table.insert(failure_funcs, f) end,
-        on_exit =    function(f) table.insert(exit_funcs,    f) end,
-    }
-    -- Inject these functions into that f's environment.
-    local old_fenv = debug.getfenv(f)
-    setmetatable(manager, {__index = old_fenv})
-    debug.setfenv(f, manager)
-    local status, err = pcall(f)
-    debug.setfenv(f, old_fenv)
-    -- NOTE: behavior undefined if a hook function raises an error
-    run_list(status and success_funcs or failure_funcs, err)
-    run_list(exit_funcs, err)
-    if not status then error(err, 2) end
-end
-
 
 --[[=================================================================
 
@@ -187,7 +154,11 @@ function apairs(...)
 end
 
 
--- ipairs() depreciated (with an error) in Lua 5.2
+--[[
+    Pure-Lua replacement for ipairs()
+
+    ipairs() depreciated (with an error) in Lua 5.2
+]]--
 if not pcall(ipairs, {}) then
     local function ipairs_helper(a, i)
         i = i + 1
@@ -233,3 +204,64 @@ function reload(mod)
     package.loaded[mod] = nil
     return require(mod)
 end
+
+
+--[[
+	scope()
+
+	John Belmonte's 'Exceptions in Lua' from Lua Programming Gems, Chapter 13
+
+    For how to use this, see the examples here:
+
+      http://partiallyappliedlife.blogspot.com/2009/08/resource-cleanup-in-lua.html
+
+    John has put this code into the public domain (communicated via private email).
+]]--
+local function run_list(list, err)
+    for _, f in ipairs(list) do f(err) end
+end
+
+if _VERSION == "Lua 5.1" then
+    function scope(f)
+        local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
+        local manager = {
+            on_success = function(f) table.insert(success_funcs, f) end,
+            on_failure = function(f) table.insert(failure_funcs, f) end,
+            on_exit =    function(f) table.insert(exit_funcs,    f) end,
+        }
+        -- Inject these functions into that f's environment.
+        local old_fenv = debug.getfenv(f)
+        setmetatable(manager, {__index = old_fenv})
+        debug.setfenv(f, manager)
+        local status, err = pcall(f)
+        debug.setfenv(f, old_fenv)
+        -- NOTE: behavior undefined if a hook function raises an error
+        run_list(status and success_funcs or failure_funcs, err)
+        run_list(exit_funcs, err)
+        if not status then error(err, 2) end
+    end
+end
+
+if _VERSION == "Lua 5.2" then
+    --[[
+    function scope(f)
+        local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
+        local manager = {
+            on_success = function(f) table.insert(success_funcs, f) end,
+            on_failure = function(f) table.insert(failure_funcs, f) end,
+            on_exit =    function(f) table.insert(exit_funcs,    f) end,
+        }
+        -- Inject these functions into that f's environment.
+        local old_fenv = debug.getfenv(f)
+        setmetatable(manager, {__index = old_fenv})
+        debug.setfenv(f, manager)
+        local status, err = pcall(f)
+        debug.setfenv(f, old_fenv)
+        -- NOTE: behavior undefined if a hook function raises an error
+        run_list(status and success_funcs or failure_funcs, err)
+        run_list(exit_funcs, err)
+        if not status then error(err, 2) end
+    end
+    ]]--
+end
+
