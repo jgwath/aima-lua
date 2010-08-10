@@ -15,9 +15,11 @@ require "table"
 require "debug"
 require "math"
 
+local M = {}
+
 
 -- Print anything - including nested tables
-function table_print (tt, indent, done)
+function M.table_print (tt, indent, done)
   done = done or {}
   indent = indent or 0
   if type(tt) == "table" then
@@ -41,8 +43,6 @@ function table_print (tt, indent, done)
   end
 end
 
-tp = table_print
-
 
 -------------------------------------------------------------------------------
 -- Coroutine safe xpcall and pcall versions
@@ -61,8 +61,8 @@ tp = table_print
 -------------------------------------------------------------------------------
 
 if _VERSION == "Lua 5.2" then
-    coxpcall = xpcall
-    copcall = pcall
+    M.coxpcall = xpcall
+    M.copcall = pcall
 else
 
     -------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ else
         return handleReturnValue(err, co, coroutine.resume(co, ...))
     end    
 
-    function coxpcall(f, err, ...)
+    function M.coxpcall(f, err, ...)
         local res, co = oldpcall(coroutine.create, f)
         if not res then
             local params = {...}
@@ -104,8 +104,8 @@ else
       return ...
     end
 
-    function copcall(f, ...)
-        return coxpcall(f, id, ...)
+    function M.copcall(f, ...)
+        return M.coxpcall(f, id, ...)
     end
 end
 
@@ -148,7 +148,7 @@ local function apairs_helper(a, i)
     end
 end
 
-function apairs(...)
+function M.apairs(...)
     --   iterator function, context, start value
     return apairs_helper, {n=select('#', ...), ...}, 0
 end
@@ -176,7 +176,7 @@ if not pcall(ipairs, {}) then
         returns:
             iterator function, context, start value
     ]]--
-    function ipairs(a)
+    function M.ipairs(a)
         local mt = getmetatable(a)
         if mt and mt.__ipairs then
             return mt.__ipairs(a)
@@ -192,18 +192,11 @@ end
 
     Round number to nearest integer value.
 ]]--
-function round(num) return math.floor(num+.5) end
-
+function M.round(num) return math.floor(num+.5) end
 
 -- printf
-function printf(...) io.write(string.format(...)) end
+function M.printf(...) io.write(string.format(...)) end
 
-
--- reload module
-function reload(mod)
-    package.loaded[mod] = nil
-    return require(mod)
-end
 
 
 --[[
@@ -222,7 +215,7 @@ local function run_list(list, err)
 end
 
 if _VERSION == "Lua 5.1" then
-    function scope(f)
+    function M.scope(f)
         local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
         local manager = {
             on_success = function(f) table.insert(success_funcs, f) end,
@@ -243,7 +236,7 @@ if _VERSION == "Lua 5.1" then
 end
 
 if _VERSION == "Lua 5.2" then
-    --[[
+    --[===[
     function scope(f)
         local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
         local manager = {
@@ -262,6 +255,7 @@ if _VERSION == "Lua 5.2" then
         run_list(exit_funcs, err)
         if not status then error(err, 2) end
     end
-    ]]--
+    ]===]--
 end
 
+return M
