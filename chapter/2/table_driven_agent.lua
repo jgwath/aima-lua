@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require "utilities"
+local U = require "aima.utils.basic"
 local A = require "aima.agents"
 
 -- Simple test of table-driven agents.
