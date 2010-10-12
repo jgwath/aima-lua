@@ -39,14 +39,15 @@ Requirements:
 Lua 5.1:
 	http://www.lua.org
 
-	Or you can just install Lua via your operating system's
-	package manager.
+Libraries:
 
-Reuben Thomas's stdlib:
+	Loop: 		http://loop.luaforge.net/
 
-	http://luaforge.net/projects/stdlib/
+	stdlib:         http://luaforge.net/projects/stdlib/
 
-	For the object module, getopt, etc.
+	The easiest way to install these will be via luarocks if that is
+	available for your platform.
+
 
 ----------------------------------------------------------------------
 
@@ -97,6 +98,10 @@ Directory structure:
 		related to the AIMA3e book.  This will contain
 		extended examples of AI use in games.
 
+	tuple
+		Renato Maia's tuple library.  This hasn't been turned
+		into a regular project yet, so it is included here.
+
 ----------------------------------------------------------------------
 
 Library Usage:
@@ -130,5 +135,3 @@ http://aima.cs.berkeley.edu/		AIMA Book website
 http://www.lua.org			The Lua Programming Language
 
 http://www.lua-users.org		Lua wiki and mailing list
-http://luaforge.net/projects/stdlib/	Reuben Thomas' stdlib project
-
