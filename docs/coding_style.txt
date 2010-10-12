@@ -41,7 +41,7 @@ Related to the above...
 The name of the source code directory is chosen deliberately, instead
 of using somethine like 'src'.  If you put the main aima-lua
 project directory on your LUA_PATH as in the README.txt, that means
-that you will need to import the agents module as 'aima/agents'.
+that you will need to import the agents module as 'aima.agents'.
 Since you may have many elements on your path, this prevents
 ambiguity.  It was desired to give the modules simple names like
 'agents', but that name is far too generic, and we don't want the user
