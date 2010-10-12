@@ -10,7 +10,7 @@ local tostring = _G.tostring
 
 local table = require "table"
 local concat = table.concat
-local unpacktab = table.unpack
+local unpacktab = unpack
 
 local oo = require "loop.base"
 local class = oo.class

@@ -4,6 +4,7 @@
 -- Author : Renato Maia <maia@inf.puc-rio.br>
 
 
+local memoize = require("memoize").memoize
 local _G = require "_G"
 local getmetatable = _G.getmetatable
 local next = _G.next
@@ -15,10 +16,9 @@ local type = _G.type
 
 local table = require "table"
 local concat = table.concat
-local unpacktab = table.unpack
+local unpacktab = unpack
 
 local tabop = require "loop.table"
-local memoize = tabop.memoize
 
 local oo = require "loop.base"
 local class = oo.class

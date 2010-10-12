@@ -11,7 +11,7 @@
 --                                                                              
 -- @usage SquareRootOf = loop.table.memoize(math.sqrt)                          
                                                                                 
-function memoize(func, weak)                                                    
+local function memoize(func, weak)                                                    
         return setmetatable({}, {                                               
                 __mode = weak,                                                  
                 __index = function(self, input)                                 
@@ -23,3 +23,5 @@ function memoize(func, weak)
                 end,                                                            
         })                                                                      
 end 
+
+return {["memoize"] = memoize}
