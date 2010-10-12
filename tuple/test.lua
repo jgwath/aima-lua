@@ -1,13 +1,12 @@
 local tuples = require "tuple"
 local tuple = tuples.create
 
-local wtuples = require "tuple.weak"
+local wtuples = require "weak"
 local wtuple = wtuples.create
 local setwkey = wtuples.setkey
 local getwkey = wtuples.getkey
 
-local vararg = require "vararg"
-local pack = vararg.pack
+require "memoize"
 
 local function newvalue(label)
 	---[[
@@ -154,8 +153,8 @@ do
 	local Nil = newproxy()
 	local function tuple(...)
 		local id = tuples.index
-		local values = pack(...)
-		for _, value in values do
+		local values = {...}
+		for _, value in pairs(values) do
 			if value == nil then value = Nil end
 			id = id[value]
 		end
