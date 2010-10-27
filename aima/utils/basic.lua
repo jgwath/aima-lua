@@ -192,7 +192,10 @@ end
 
     Round number to nearest integer value.
 ]]--
-function M.round(num) return math.floor(num+.5) end
+function M.round(num, idp) 
+    local mult = 10^(idp or 0)
+    return math.floor(num * mult + 0.5) / mult
+end
 
 -- printf
 function M.printf(...) io.write(string.format(...)) end
