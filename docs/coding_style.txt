@@ -1,0 +1,76 @@
+
+			Coding Style
+
+----------------------------------------------------------------------
+
+Module Declaration & Use
+
+This codebase will not be using the Lua module statement at all.  We
+will instead follow the recommendations on the Lua Wiki:
+
+    http://lua-users.org/wiki/LuaModuleFunctionCritiqued
+
+This is an example module:
+
+	-- code in file hello/world.lua
+	local M = {}
+
+	local function test(n) print(n) end
+	function M.test1() test(123) end
+	function M.test2() M.test1(); M.test1() end
+
+	return M
+
+This is an example import:
+
+	local HW = require "hello.world"
+	HW.test2() -- prints "123\n123\n"
+
+Note that you can import the module with any local name you find
+convenient.  In most cases, where there will be no ambiguity, we will
+just use single letters.
+
+So all functions and objects in a module file must either be declared
+'local' (and obviously not exported) or put into the module table 'M'.
+No global declarations!
+
+----------------------------------------------------------------------
+
+Related to the above...
+
+The name of the source code directory is chosen deliberately, instead
+of using somethine like 'src'.  If you put the main aima-lua
+project directory on your LUA_PATH as in the README.txt, that means
+that you will need to import the agents module as 'aima.agents'.
+Since you may have many elements on your path, this prevents
+ambiguity.  It was desired to give the modules simple names like
+'agents', but that name is far too generic, and we don't want the user
+to have to rely on the proper ordering of the module search path so
+that the running application can pick up the proper list module.
+But 'aima.agents' should still be unique for a particular
+user or project.
+
+The Java language designers long ago decided that globally unique
+module (class) names is desirable, but fortunately we can avoid the
+RSI horror that you typically see in Java source code like:
+
+  import com.example.proj_name.lib_name.OverlyLongClassName
+
+which still leaves you typing in OverlyLongClassName over and over
+again in the main program text.  The lack Lua's ability to just alias a
+shorter name to a function turns even simple code into a blinding wall
+of text.  Which can then help hide critical details.
+
+In Lua, you can also just pick out particular functions from a module:
+
+	local rand_agent = require("aima/agents").Random_Agent
+
+That does look a little peculiar, especially for people coming from
+other languages.  But require() is a regular Lua function, so indexing
+the needed function out of the table of objects returned by require()
+works fine.  
+
+So, in summary, this method of declaring modules and importing them is
+relatively short, convenient, and still unambiguous.
+
+----------------------------------------------------------------------
