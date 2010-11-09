@@ -261,4 +261,19 @@ if _VERSION == "Lua 5.2" then
     ]===]--
 end
 
+
+local unpack = unpack or table.unpack -- Lua 5.2
+
+--- Reverse the arguments passed.
+-- @return Arguments passed in reverse order.
+local function reverse_args(...)
+    local nargs = select('#', ...)
+    local args = {}
+    for i = 1, nargs do
+        args[nargs + 1 - i] = (select(i, ...))
+    end
+    return unpack(args, 1, nargs)
+end
+
+M.reverse_args = reverse_args
 return M
