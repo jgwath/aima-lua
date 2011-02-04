@@ -146,6 +146,9 @@ collectall()
 emptymodules()
 end
 
+require "os"
+os.exit()
+
 do
 	print("\n--- Function Tuples --------------------------------------------\n")
 	
