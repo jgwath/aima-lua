@@ -53,7 +53,7 @@ Libraries:
 
 Directory structure:
 
-	aima
+	ai
 		The main library codebase.
 
 		Generally speaking, this will be code that might be of
@@ -86,7 +86,7 @@ Directory structure:
 		If you are working your way through the AIMA book,
 		start right here in chapter/2.
 
-	aima/utils
+	utils
 		Utility libraries.
 
 	docs
@@ -111,8 +111,8 @@ variable.  For example, if /bin/bash is your command shell:
 In your Lua code, to use a library module, you will need to assign it to
 a local variable like this:
 
-	local agents = require "aima.agents"
-	local PC = require "aima.utils.python_compat"
+	local agents = require "ai.agents"
+	local PC = require "utils.python_compat"
 
 	-- Now use something from the agents module.
 	myagent2 = agents.Random_Agent(percept_table)
