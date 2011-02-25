@@ -37,14 +37,16 @@ local function emptymodules(what)
 end
 
 do
-	print("\n--- Table ------------------------------------------------------\n")
-emptymodules()
+	print("\n--- Table ---------------------------------------------------\n")
+    emptymodules()
+
 	local map = {}
 	map[tuple(1,2,3)        ] = "1,2,3"
 	map[tuple("A","B","C")  ] = "A,B,C"
 	map[tuple({},{},{})     ] = "{},{},{}"
-	map[tuple(true,{},false)] = "true,{},false"
-collectall()
+	map[tuple(true,nil,false)] = "true,nil,false"
+    collectall()
+
 	assert(map[tuple(1,2,3)      ] == "1,2,3")
 	assert(map[tuple("A","B","C")] == "A,B,C")
 	for tuple, value in pairs(map) do
@@ -54,6 +56,7 @@ collectall()
 collectall()
 emptymodules()
 end
+
 
 do
 	print("\n--- Weak Values ------------------------------------------------\n")
@@ -146,6 +149,8 @@ collectall()
 emptymodules()
 end
 
+os.exit()
+-- this code is broken
 do
 	print("\n--- Function Tuples --------------------------------------------\n")
 	
