@@ -98,10 +98,6 @@ Directory structure:
 		related to the AIMA3e book.  This will contain
 		extended examples of AI use in games.
 
-	tuple
-		Renato Maia's tuple library.  This hasn't been turned
-		into a regular project yet, so it is included here.
-
 ----------------------------------------------------------------------
 
 Library Usage:

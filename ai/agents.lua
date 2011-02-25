@@ -23,6 +23,9 @@ end
 
 
 -- TODO : should this instead be a part of the environment?
+-- Also, this is kind of rude. Instead of injecting the trace
+-- into the given agent, shoudn't we instead return a new agent
+-- and leave the original unmodified?
 function M.Trace_Agent(agent)
     local old_program = agent.program
     function new_program(self, percept)
@@ -161,6 +164,8 @@ function M.Table_Driven_Agent:program(percept)
     -- This works because only the actions are integer indicies,
     -- the percepts are names.
     -- I may be trying to be too clever here.
+    -- If we're going to go all OOP, then the history should be
+    -- a real object too.
     local action = p.random_choice(node)
 
     for i, curr_percept in ipairs(hist) do
