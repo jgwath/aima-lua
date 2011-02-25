@@ -25,12 +25,17 @@ local WeakKeys = class{__mode="k"}
 local ParentOf = WeakKeys()
 local ValueOf = WeakKeys()
 local SizeOf = WeakKeys()
+local fake_nil = {}
 
-function unpack(tuple)
+function unpack_tuple(tuple)
 	local values = {}
 	local size = SizeOf[tuple]
 	for i = size, 1, -1 do
-		tuple, values[i] = ParentOf[tuple], ValueOf[tuple]
+        local val
+		tuple, val = ParentOf[tuple], ValueOf[tuple]
+        if val ~= fake_nil then
+            values[i] = val
+        end
 	end
 	return unpacktab(values, 1, size)
 end
@@ -54,7 +59,7 @@ function Tuple:__index(value)
 end
 
 function Tuple:__call(i)
-	if i == nil then return unpack(self) end
+	if i == nil then return unpack_tuple(self) end
 	local size = SizeOf[self]
 	if i == "#" then return size end
 	if i > 0 then i = i-size-1 end
@@ -81,7 +86,11 @@ SizeOf[index] = 0
 function create(...)
 	local tuple = index
 	for i = 1, select("#", ...) do
-		tuple = tuple[select(i, ...)]
+        local val = select(i, ...)
+        if val == nil then
+            val = fake_nil
+        end
+		tuple = tuple[val]
 	end
 	return tuple
 end

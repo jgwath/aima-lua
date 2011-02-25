@@ -25,9 +25,9 @@ local class = oo.class
 
 module(...)
 
-local WeakKeys = class{__mode="k"}
+local WeakKeys   = class{__mode="k"}
 local WeakValues = class{__mode="v"}
-local WeakTable = class{__mode="kv"}
+local WeakTable  = class{__mode="kv"}
 
 
 
@@ -36,7 +36,7 @@ local ParentOf = WeakTable()
 local ValueOf = WeakTable()
 local SizeOf = WeakKeys()
 
-function unpack(tuple)
+function unpack_tuple(tuple)
 	local values = {}
 	local size = SizeOf[tuple]
 	for i = size, 1, -1 do
@@ -45,7 +45,7 @@ function unpack(tuple)
 	return unpacktab(values, 1, size)
 end
 
-function size(tuple)
+function tuple_size(tuple)
 	return SizeOf[tuple]
 end
 
@@ -103,7 +103,7 @@ end, "kv")
 
 
 -- from values to a tuple (weak mode == "k")
-local Tuple = class{__mode="k", __len=size}
+local Tuple = class{__mode="k", __len=tuple_size}
 
 function Tuple:__index(value)
 	local tuple = Tuple()
@@ -116,7 +116,7 @@ function Tuple:__index(value)
 end
 
 function Tuple:__call(i)
-	if i == nil then return unpack(self) end
+	if i == nil then return unpack_tuple(self) end
 	local size = SizeOf[self]
 	if i == "#" then return size end
 	if i > 0 then i = i-size-1 end
