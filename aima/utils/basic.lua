@@ -239,6 +239,10 @@ if _VERSION == "Lua 5.1" then
 end
 
 if _VERSION == "Lua 5.2" then
+    --[[ The problem here is that it is not at all clear how this
+    ought to be implemented.  Problems include setfenv() and getfenv() and
+    how the new _ENV stuff works in 5.2.
+    ]]--
     --[===[
     function scope(f)
         local success_funcs, failure_funcs, exit_funcs = {}, {}, {}
@@ -265,6 +269,7 @@ end
 local unpack = unpack or table.unpack -- Lua 5.2
 
 --- Reverse the arguments passed.
+-- The call to reverse_args(1, 2, nil) will return: nil, 2, 1.
 -- @return Arguments passed in reverse order.
 local function reverse_args(...)
     local nargs = select('#', ...)
