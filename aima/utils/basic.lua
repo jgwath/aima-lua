@@ -7,8 +7,6 @@
     basic Lua distribution.  Others, like table_print() are quite useful
     for quick debugging.
 
-    Unlike just about everything else I do, this will inject
-    the functions into the global namespace.
 ]]--
 
 require "table"
