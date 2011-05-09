@@ -99,9 +99,14 @@ end
 local function printf(...) io.write(string.format(...)) end
 
 
+local function global_import(...)
+    for k, v in pairs(require(...)) do _G[k] = v end
+end
+
 return {
-    printf      = printf,
-    apairs      = apairs,
-    round       = round,
-    table_print = table_print,
+    printf          = printf,
+    apairs          = apairs,
+    round           = round,
+    table_print     = table_print,
+    global_import   = global_import,
 }
